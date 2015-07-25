@@ -1,0 +1,9 @@
+.idea
+*.iml
+out
+gen
+
+node_modules
+
+certs/*
+public/build/*

@@ -1,0 +1,27 @@
+.col-xs-12.col-sm-6.col-sm-offset-3.col-lg-4.col-lg-offset-4
+    h1 Register
+    form(name="registerForm")
+        .form-group
+            label Username:
+            input.form-control(type="text" ng-model="username" name="username" required minlength="{{usernameLength = 3}}")
+            div(ng-show='registerForm.username.$touched')
+                label(ng-show='registerForm.username.$error.minlength') Minimal length: {{usernameLength}} characters
+        .form-group
+            label Email:
+            input.form-control(type="email" ng-model="email" name="email" required)
+            div(ng-show='registerForm.email.$touched')
+                label(ng-show='registerForm.email.$error.required') Email is required
+                label(ng-show='registerForm.email.$error.email') Invalid email
+        .form-group
+            label Password:
+            input.form-control(type="password" ng-model="password" name="password" required minlength="{{passwordLength = 5}}")
+            div(ng-show='registerForm.password.$touched')
+                label(ng-show='registerForm.password.$error.required') Password required
+                label(ng-show='registerForm.password.$error.minlength') Minimal length: {{passwordLength}} characters
+        .form-group(ng-hide="!password")
+            label Repeat password:
+            input.form-control(type="password" ng-model="passwordRepeat" name="passwordRepeat" required)
+            div(ng-show='registerForm.passwordRepeat.$touched')
+                label(ng-show='password != passwordRepeat') Passwords aren't equal
+        hr
+        button.btn.btn-primary.form-control(ng-click="validate(registerForm)" ng-disabled="registerForm.$invalid || password != passwordRepeat") Register

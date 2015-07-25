@@ -1,0 +1,59 @@
+doctype html
+html(ng-app="#{APP_NAME}")
+    head
+        title(ng-bind="'#{APP_NAME} - ' + $state.current.title") #{APP_NAME} -
+        link(rel='stylesheet', href='/plugins/bootstrap/dist/css/bootstrap.css')
+        link(rel='stylesheet', href='/css/style.min.css')
+        script
+            | window.APP_NAME = '#{APP_NAME}';
+    body
+        nav.navbar.navbar-default.navbar-fixed-top
+            .container-fluid
+                .navbar-header
+                    button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar')
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    a.navbar-brand(ui-sref='start') #{APP_NAME}
+                #navbar.collapse.navbar-collapse
+                    ul.nav.navbar-nav
+                        li
+                            a(ui-sref='start') Start page
+                        li(ng-show='user')
+                            a(ui-sref='secret') Secret zone :D :D :D
+                        //li.dropdown
+                        //    a.dropdown-toggle(href='#', data-toggle='dropdown', role='button')
+                        //        | Dropdown
+                        //        span.caret
+                        //    ul.dropdown-menu
+                        //        li
+                        //            a(href='#') Action
+                        //        li
+                        //            a(href='#') Another action
+                        //        li
+                        //            a(href='#') Something else here
+                        //        li.divider(role='separator')
+                        //        li
+                        //            a(href='#') Separated link
+                        //        li.divider(role='separator')
+                        //        li
+                        //            a(href='#') One more separated link
+                    ul.nav.navbar-nav.navbar-right(ng-hide="user")
+                        li
+                            a(ui-sref='login') Login
+                        li
+                            a(ui-sref='register') Register
+                    .pull-right(ng-show="user") Connected as {{user.username}}
+                        a(ng-click="disconnectUser()")  Disconnect
+        ui-view
+
+// Lib
+script(src='/plugins/jquery/dist/jquery.js')
+script(src='/plugins/bootstrap/dist/js/bootstrap.js')
+
+// Angular
+script(src='/plugins/angular/angular.js')
+script(src='/plugins/angular-ui-router/release/angular-ui-router.js')
+
+// Application
+script(src='/js/app.js')

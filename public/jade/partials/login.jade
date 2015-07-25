@@ -1,0 +1,11 @@
+.col-xs-12.col-sm-6.col-sm-offset-3.col-lg-4.col-lg-offset-4
+    h1 Login
+    form(name="loginForm")
+        .form-group
+            label Username:
+            input.form-control(type="text" ng-model="username" name="username" required)
+        .form-group
+            label Password:
+            input.form-control(type="password" ng-model="password" name="password" required)
+        hr
+        button.btn.btn-primary.form-control(ng-click="validate(loginForm)" ng-disabled="loginForm.$invalid") Validate
