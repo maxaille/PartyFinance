@@ -26,11 +26,11 @@ mongoose.connection.once 'open', ->
 
 # ******* CONFIGURATION *******
 app.set 'view engine', 'jade'
-
+app.use logger 'dev'
 app.use bodyParser.json()
 app.use bodyParser.urlencoded extended: false
 
-# **** Predefined Errors ****
+# **** Predefined Errors ****0
 # Set some predefined error responses in req
 app.use require './utils/errors'
 
@@ -47,9 +47,6 @@ app.use (req, res, next) ->
 
 # ********** STATIC  **********
 app.use express.static path.join(__dirname, 'public/build')
-app.get '/', (req, res) ->
-    res.renderStatic 'index',
-        APP_NAME: conf.appName
 
 # ******* AUTHENTICATION *******
 app = require('./utils/authentication')(app)

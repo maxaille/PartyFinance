@@ -1,43 +1,10 @@
 @App = angular.module window.APP_NAME, ['ui.router']
-API = location.origin
-
-App.config [
-    '$stateProvider'
-    '$urlRouterProvider'
-    ($stateProvider, $urlRouterProvider) ->
-        $urlRouterProvider.otherwise '/'
-
-        $stateProvider
-        .state 'start',
-            url: '/'
-            title: 'start'
-            controller: 'startCtrl'
-            templateUrl: '/partials/start.html'
-
-        .state 'login',
-            url: '/login'
-            controller: 'loginCtrl'
-            title: 'login'
-            templateUrl: '/partials/login.html'
-            params: user: null, oldState: null
-
-        .state 'register',
-            url: '/register'
-            controller: 'registerCtrl'
-            title: 'register'
-            templateUrl: '/partials/register.html'
-
-        .state 'secret',
-            url: '/secret'
-            controller: 'secretCtrl'
-            title: 'secret zone'
-            templateUrl: '/partials/secret.html'
-            secured: true
-]
+App.value 'API', location.origin
 
 App.factory 'authInterceptor', [
     '$token'
-    ($token) ->
+    'API'
+    ($token, API) ->
         request: (config) ->
             token = $token.getToken()
             # Request to an API subroute, add token in headers
@@ -81,77 +48,23 @@ App.service '$token', [
                 else return false
 ]
 
-App.controller 'startCtrl', [
-    '$rootScope'
-    '$scope'
-    ($rootScope, $scope) ->
-]
-
-App.controller 'secretCtrl', [
-    '$rootScope'
-    '$scope'
-    ($rootScope, $scope) ->
-]
-
-App.controller 'loginCtrl', [
-    '$rootScope'
-    '$scope'
-    '$http'
-    '$state'
-    '$stateParams'
-    '$timeout'
-    ($rootScope, $scope, $http, $state, $stateParams, $timeout) ->
-        sendLogin = (user) ->
-            $http.post API + '/login', user
-            .success (data) ->
-                $rootScope.$broadcast 'user:loggedin', user: data.user, exp: data.exp*1000
-
-        $scope.validate = (form) ->
-            # Use 'form' for checking fields
-            sendLogin username: $scope.username, password: $scope.password
-            .success (data) ->
-                $state.go if $stateParams.oldState then $stateParams.oldState.name else 'start'
-            .error (data) ->
-                console.log data
-
-        if $stateParams.user
-            sendLogin $stateParams.user
-            .success ->
-                $state.go 'start'
-            .error ->
-                console.log 'nok'
-]
-
-App.controller 'registerCtrl', [
-    '$rootScope'
-    '$scope'
-    '$http'
-    '$state'
-    ($rootScope, $scope, $http, $state) ->
-        $scope.validate = ->
-            if $scope.password != $scope.passwordRepeat then return
-            $http.post API + '/api/users', username: $scope.username, password: $scope.password, email: $scope.email
-            .success (data) ->
-                $state.go 'login', user: username: $scope.username, password: $scope.password
-                console.log data
-            .error (data) ->
-                console.log data
-]
-
 App.run [
     '$rootScope'
     '$state'
+    '$anchorScroll'
     '$location'
     '$http'
     '$token'
     '$window'
     '$timeout'
-    ($rootScope, $state, $location, $http, $token, $window, $timeout) ->
+    'API'
+    ($rootScope, $state, $anchorScroll, $location, $http, $token, $window, $timeout, API) ->
         $rootScope.title = $state.current.title
         $rootScope.$http = $http
         $rootScope.$window = $window
         $rootScope.$state = $state
         $rootScope.auth = $token
+        $rootScope.$anchorScroll = $anchorScroll
 
         $rootScope.user = null
 

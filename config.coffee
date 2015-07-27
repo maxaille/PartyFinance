@@ -10,6 +10,3 @@ module.exports =
 
     tokenSecret: 'YOU SHALL NOT DECODE' # IMPORTANT: to change !!
     tokenExpirationDelay: 60*1000
-
-    appName: 'PartyFinance'
-    httpsOnly: false

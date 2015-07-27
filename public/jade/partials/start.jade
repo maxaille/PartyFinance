@@ -1,5 +1,59 @@
-.col-xs-12
-    div Start page
-    div(ng-if="user") {{user.username}} is connected
-div(ng-if="user")
-    | WTF WTF WTF
+section.stripped
+    .container
+        .row
+            .col-xs-12
+                header
+                    h1 Party Finance
+                    hr.short
+                    h4 Manage the costs of all your parties easily !
+                    hr.short
+                    a(anchor-smooth-scroll="seemorethere")
+                        button.btn.btn-primary See more
+                    button.btn.btn-info Go to the panel
+section.stripped#seemorethere
+    .container
+        .row
+            .col-sm-8
+                h1 PARTY !!
+                h4
+                    | Create, organize, invite your friends and put the beers in the fridge.
+                    br
+                    | We will take care of the math for you :-)
+            .col-sm-4.beer-fridge
+                .beer(ng-repeat="i in (((b=[]).length=51)&&b) track by $index")
+                    .mousse-s-il-vous-plait -
+                    i.fa.fa-beer.big
+section.stripped
+    .container
+        .row
+            .col-xs-4
+                h1 SCREEN
+                h1 PLZ
+            .col-xs-8.align-right
+                h1 Divides automatically
+                h4
+                    | Give the amount of money that each person owe you, based based on your own criteria.
+                    | You can set a base cost, for tenancies for example, or specific criteria like food, alcohol etc. for each
+
+section.stripped
+    .container
+        .row
+            .col-xs-8
+                h1 Groups
+                h4
+                    | Set yourself in a group with your friends to easily find them and invite them to parties !
+            .col-xs-4
+                h1 SCREEN
+                h1 PLZ
+section.stripped.spacer
+section.stripped#whydude
+    .container
+        .row
+            .col-xs-12.pull-right
+                h1 But, why ?
+                h4
+                    | We are students and we don't really have money to spend for all our friends, so we split the bill.
+                    | And we think that if we can spend our money approximately equitably that's better.
+section.stripped
+    div(ng-if="user")
+        | WTF WTF WTF
