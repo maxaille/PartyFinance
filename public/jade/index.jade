@@ -5,11 +5,7 @@ html(ng-app="PartyFinance")
         link(rel='stylesheet', href='/plugins/bootstrap/dist/css/bootstrap.css')
         link(rel='stylesheet', href='/plugins/font-awesome/css/font-awesome.min.css')
         link(rel='stylesheet', href='/css/styles.min.css')
-
-
         link(rel='stylesheet', href='/resources/fonts/fonts.css')
-        script
-            | window.APP_NAME = 'PartyFinance';
     body
         .wrapper
             nav.navbar.navbar-default.navbar-fixed-top
@@ -23,7 +19,7 @@ html(ng-app="PartyFinance")
                     #navbar.collapse.navbar-collapse
                         ul.nav.navbar-nav
                             li(ng-show='user')
-                                a(ui-sref='secret') Secret zone :D :D :D
+                                a(ui-sref='panel') Panel
                             //li.dropdown
                             //    a.dropdown-toggle(href='#', data-toggle='dropdown', role='button')
                             //        | Dropdown
@@ -46,9 +42,12 @@ html(ng-app="PartyFinance")
                                 a(ui-sref='login') Login
                             li
                                 a(ui-sref='register') Register
-                        .pull-right(ng-show="user") Connected as {{user.username}}
-                            a(ng-click="disconnectUser()")  Disconnect
-            ui-view(ng-class='$state.current.name')
+                        ul.nav.navbar-nav.navbar-right(ng-show="user")
+                            li
+                                .nav-text Connected as {{user.username}}
+                            li
+                                a(ng-click="disconnectUser()")  Disconnect
+            ui-view.fade-in-up(ng-class='$state.current.name')
             footer
                 .container
                     .col-sm-3
@@ -61,20 +60,27 @@ html(ng-app="PartyFinance")
                                 a(ui-sref="start" anchor-smooth-scroll="whydude") But, who are you ?!
                     .col-sm-3
                         ul
-                            li Panel
-                            li Login
-                            li Register
+                            li
+                                a(ui-sref="panel") Panel
+                            li
+                                a(ui-sref="login") Login
+                            li
+                                a(ui-sref="register") Register
                     .col-sm-3
                         ul
-                            li Contact
-                            li Github
-                            li Fax
+                            li
+                                a(ui-sref="contact") Contact
+                            li
+                                a(href="https://github.com/maxaille/PartyFinance") Github
+                            li
+                                a(href="http://bit.ly/1KuJBKF") Fax
 // Lib
 script(src='/plugins/jquery/dist/jquery.js')
 script(src='/plugins/bootstrap/dist/js/bootstrap.js')
 
 // Angular
 script(src='/plugins/angular/angular.js')
+script(src='/plugins/angular-resource/angular-resource.min.js')
 script(src='/plugins/angular-ui-router/release/angular-ui-router.js')
 
 // Application

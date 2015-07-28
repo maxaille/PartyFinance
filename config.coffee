@@ -9,4 +9,4 @@ module.exports =
     mongoPassword: ''
 
     tokenSecret: 'YOU SHALL NOT DECODE' # IMPORTANT: to change !!
-    tokenExpirationDelay: 60*1000
+    tokenExpirationDelay: 60*60*1000

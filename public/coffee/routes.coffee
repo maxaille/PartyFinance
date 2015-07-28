@@ -24,10 +24,10 @@ App.config [
             title: 'register'
             templateUrl: '/partials/register.html'
 
-        .state 'secret',
-            url: '/secret'
-            controller: 'secretCtrl'
-            title: 'secret zone'
-            templateUrl: '/partials/secret.html'
+        .state 'panel',
+            url: '/panel'
+            controller: 'panelCtrl'
+            title: 'Panel'
+            templateUrl: '/partials/panel.html'
             secured: true
 ]

@@ -30,7 +30,7 @@ app.use logger 'dev'
 app.use bodyParser.json()
 app.use bodyParser.urlencoded extended: false
 
-# **** Predefined Errors ****0
+# **** Predefined Errors ****
 # Set some predefined error responses in req
 app.use require './utils/errors'
 

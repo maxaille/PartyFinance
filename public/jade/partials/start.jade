@@ -1,4 +1,4 @@
-section.stripped
+section.main
     .container
         .row
             .col-xs-12
@@ -9,7 +9,8 @@ section.stripped
                     hr.short
                     a(anchor-smooth-scroll="seemorethere")
                         button.btn.btn-primary See more
-                    button.btn.btn-info Go to the panel
+                    a(ui-sref="panel")
+                        button.btn.btn-info Go to the panel
 section.stripped#seemorethere
     .container
         .row
@@ -45,7 +46,7 @@ section.stripped
             .col-xs-4
                 h1 SCREEN
                 h1 PLZ
-section.stripped.spacer
+section.spacer
 section.stripped#whydude
     .container
         .row

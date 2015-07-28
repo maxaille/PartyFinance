@@ -7,5 +7,9 @@
         .form-group
             label Password:
             input.form-control(type="password" ng-model="password" name="password" required)
-        hr
+        hr.short
         button.btn.btn-primary.form-control(ng-click="validate(loginForm)" ng-disabled="loginForm.$invalid") Validate
+    hr
+    h4 You don't have you account yet ? Go
+        = ' '
+        a.blue(ui-sref="register") register yourself !

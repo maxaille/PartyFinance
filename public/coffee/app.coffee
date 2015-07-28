@@ -1,4 +1,7 @@
-@App = angular.module window.APP_NAME, ['ui.router']
+@App = angular.module "PartyFinance", [
+    'ui.router'
+    'ngResource'
+]
 App.value 'API', location.origin
 
 App.factory 'authInterceptor', [
