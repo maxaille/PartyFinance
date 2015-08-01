@@ -13,7 +13,7 @@ App.factory 'authInterceptor', [
             # Request to an API subroute, add token in headers
             if config.url.indexOf(API) == 0 and new URL(config.url).pathname.indexOf(new URL(API).pathname) == 0 and token
                 config.headers.Authorization = 'Bearer ' + token
-            return config;
+            return config
         response: (res) ->
             if res.config.url.indexOf(API) == 0 and typeof res.data.token != 'undefined'
                 $token.saveToken res.data.token

@@ -1,8 +1,7 @@
 angular.module 'PartyFinance'
-.factory 'User', [
+.factory 'Party', [
     '$resource'
-    '$modal'
-    ($resource) ->
-        $resource '/api/parties/:id/:arg', id: '@id', arg: '@arg',
-            'update': method: 'PUT'
+    'API'
+    ($resource, API) ->
+        $resource API + '/api/parties/:id/:arg', id: '@id', arg: '@arg'
 ]

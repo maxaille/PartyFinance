@@ -14,14 +14,23 @@ section
         background: #D6F7C8
     &.stripped:nth-child(odd)
         background: #F9FFE2
-    .row
-        padding: 40px 40px 60px 40px
+    @media(min-width: 768px)
+        .row
+            padding: 40px 40px 60px 40px
     &.spacer
         padding-top: 180px
+
+// Grid
+.simple-marge
+    &:not(':first-child')
+        margin-left: 0
 
 // Alignment
 .align-right
     text-align: right
+@media(min-width: 768px)
+    .align-right-sm
+        text-align: right
 
 // Font-awesome
 i.fa.big
@@ -37,6 +46,14 @@ a:hover
     cursor: pointer
 a:hover
     color: #CCC
+
+    
+// Inputs
+input.form-control
+    -webkit-border-radius: 0
+    -moz-border-radius: 0
+    border-radius: 0
+    
 
 // Buttons
 .btn

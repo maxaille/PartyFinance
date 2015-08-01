@@ -9,7 +9,8 @@ PartySchema = new mongoose.Schema
         User: type: mongoose.Schema.Types.ObjectId, ref: 'User'
         name: String
         expenses: [String]
+        paid: Number
     ]
-    expenses: [name: String, cost: Number]
+    expenses: [name: String, cost: Number, to: type: mongoose.Schema.Types.ObjectId, ref: 'User']
 
 module.exports = mongoose.model 'party', PartySchema

@@ -14,6 +14,7 @@ generateToken = (user) ->
 
 formatUser = (user) ->
     result =
+        id: user._id
         username: user.username
     return result
 

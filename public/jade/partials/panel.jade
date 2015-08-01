@@ -1,38 +1,44 @@
 .container-fluid
     .row
         .col-xs-12.col-sm-4
-            h2 Remaining total due: 404€
-            h3 For:
-            ul
-                li Party 1
-                li Party 2
-                li Party 3
-                li Party 4
+            .portlet
+                .title Remaining total due
+                .content
+                    .dark-block
+                        div Owe
+                            span.big  {{totalOwe || 0}}
+                            |  €
+                        div Due
+                            span.big  {{totalDue || 0}}
+                            |  €
+                    ul.table
+                        li(ng-repeat="party in parties" ng-if="party.due > 0 || party.owe > 0")
+                            .row
+                                .col-xs-4 {{party.name}}
+                                .col-xs-4 due: {{party.due || 0}}€
+                                .col-xs-4 owe: {{party.owe || 0}}€
         .col-xs-12.col-sm-4
-            h2 List of your parties
-            ul
-                li Party 1
-                li Party 1
-                li Party 1
-                li Party 1
-                li Party 1
-                li Party 1
-                li Party 1
-                li Party 1
-                li Party 1
-                li Party 1
-                li Party 1
+            .portlet
+                .title List of your parties
+                .content
+                    .dark-block
+                        .big {{parties.length}}
+                        | coming this month
+                    ul.table
+                        li(ng-repeat="party in parties") {{party.name}}
         .col-xs-12.col-sm-4
-            h2 Your groups
-            ul
-                li Group 1
-                li Group 1
-                li Group 1
-                li Group 1
-                li Group 1
-                li Group 1
-                li Group 1
-                li Group 1
-                li Group 1
-                li Group 1
-                li Group 1
+            .portlet
+                .title Your groups
+                .content
+                    ul.table
+                        li Group 1
+                        li Group 1
+                        li Group 1
+                        li Group 1
+                        li Group 1
+                        li Group 1
+                        li Group 1
+                        li Group 1
+                        li Group 1
+                        li Group 1
+                        li Group 1

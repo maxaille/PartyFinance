@@ -51,6 +51,9 @@ app.use express.static path.join(__dirname, 'public/build')
 # ******* AUTHENTICATION *******
 app = require('./utils/authentication')(app)
 
+# ************ QUERY ***********
+app = require('./utils/query')(app)
+
 # ******* JWT MIDDLEWARE *******
 User = require './models/User'
 app.use (req, res, next) ->

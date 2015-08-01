@@ -34,6 +34,7 @@ routes =
         fn: (req, res) ->
             where = {}
             if req.params and req.params.id then where._id = req.params.id
+            else if req.query and Object.getOwnPropertyNames(req.query).length > 0 then where = req.formatUser req.query
 
             User.find where, (err, users) ->
                 if err

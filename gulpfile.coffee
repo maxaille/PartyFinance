@@ -16,7 +16,7 @@ log = util.log
 
 gulp.task "sass", ->
     log "Generate CSS files " + (new Date()).toString()
-    gulp.src 'public/sass/*.sass'
+    gulp.src ['public/sass/*.sass', 'public/sass/modules/**/*.sass']
     .pipe sass style: 'expanded'
     .pipe rename suffix: '.min'
     .pipe concat 'styles.min.css'
