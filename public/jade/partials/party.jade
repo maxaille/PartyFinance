@@ -1,7 +1,7 @@
 .container-fluid
     .row
-        .col-xs-12.col-md-4.col-sm-6
-            .portlet
+        ul.flowGrid(ng-flow-grid="partyGrid" min-item-width="350")
+            .portlet.flowGridItem
                 .title Current party
                 .content
                     .dark-block
@@ -11,7 +11,17 @@
                         div {{'Due' | translate}}
                             span.big  {{party.due || 0}}
                             |  €
-            .portlet
+
+            .portlet.flowGridItem
+                .title Participants
+                .content
+                    .dark-block
+                        span.big {{party.participants.length}}
+                        |  participants
+                    ul.table
+                        li(ng-repeat="participant in party.participants") {{participant.username}}
+
+            .portlet.flowGridItem
                 .title Indebted
                 .content
                     .dark-block
@@ -20,41 +30,11 @@
                     ul.table
                         li(ng-repeat="indebted in party.indebted")
                             a(ng-click="indebted.hide = !indebted.hide")
-                                | {{indebted.name}}: {{indebted.due}}€
+                                | {{indebted.participant.user.username}}: {{indebted.due}}€
                                 ul.no-hover(ng-show="indebted.hide")
-                                    li(ng-repeat="dueExp in indebted.dueExpenses") {{dueExp.name}}: {{dueExp.cost / cntExpenses[dueExp.name].length}} €
-        .col-xs-12.col-md-4.col-sm-6
-            .portlet
-                .title Participants
-                .content
-                    .dark-block
-                        span.big {{party.participants.length}}
-                        |  participants
-                    ul.table
-                            li(ng-repeat="participant in party.participants") {{participant.name || participant.User.username}}
+                                    li(ng-repeat="dueExp in indebted.dueExpenses") {{dueExp.name}}: {{dueExp.cost / dueExp.participants.length}} €
 
-            .portlet(ng-model="portlet_expenses")
-                .title Expenses
-                    a.small.pull-right(ng-click="portlet_expenses.edit?portlet_expenses.save():void(0); portlet_expenses.edit = !portlet_expenses.edit")
-                        button.btn.btn-small(ng-class="{'btn-success': portlet_expenses.edit}") {{portlet_expenses.edit?"SAVE":"EDIT"}}
-                .content
-                    .dark-block
-                        span.big {{party.expenses.length}}
-                        |  expenses
-                    ul.table
-                        li(ng-repeat="expense in party.expenses")
-                            a(ng-click="expense.show = !expense.show" ng-hide="portlet_expenses.edit") {{expense.name}}: {{expense.cost}}€
-                                ul.no-hover(ng-show="expense.show")
-                                    li(ng-repeat="participant in party.participants" ng-if="participant.expenses.indexOf(expense.name)>-1") {{participant.name || participant.User.username}}
-                            .edit(ng-show="portlet_expenses.edit")
-                                input(ng-value="expense.name")
-                                | :
-                                input(type="number" ng-value="expense.cost" ng-show="portlet_expenses.edit")
-                                | €
-
-
-        .col-xs-12.col-md-4.col-sm-6.col-md-4
-            .portlet
+            .portlet.flowGridItem
                 .title Creditors
                 .content
                     .dark-block
@@ -66,3 +46,44 @@
                                 | {{creditor.name}}: {{creditor.due}}€
                                 ul.no-hover(ng-show="creditor.hide")
                                     li(ng-repeat="dueExp in creditor.dueExpenses") {{dueExp.name}}: {{dueExp.cost / cntExpenses[dueExp.name].length}} €
+
+            .portlet.flowGridItem(ng-model="portlet_expenses")
+                .title Expenses
+                    a.small.pull-right(ng-show="portlet_expenses.edit" ng-click="portlet_expenses.save()")
+                        button.btn.btn-small.btn-success {{"SAVE"}}
+                    a.small.pull-right(ng-hide="portlet_expenses.edit" ng-click="portlet_expenses.edit = true")
+                        button.btn.btn-small {{"EDIT"}}
+                .content
+                    .dark-block
+                        span.big {{party.expenses.length}}
+                        |  expenses
+                    ul.table
+                        li(ng-repeat="expense in party.expenses")
+                            a(ng-click="expense.show = !expense.show" ng-hide="portlet_expenses.edit") {{expense.name}}: {{expense.cost}}€ for {{expense.to.username}}
+                                ul.no-hover(ng-show="expense.show")
+                                    li(ng-repeat="participant in expense.participants") {{participant.user.username}}
+                            .edit(ng-show="portlet_expenses.edit")
+                                input(ng-model="expense.name")
+                                | :
+                                input(type="number" ng-model="expense.cost" ng-show="portlet_expenses.edit" min="0")
+                                | €
+                                br
+                                a(ng-click="expense.showParticipants = !expense.showParticipants")
+                                    | > Participants
+                                    ul.no-hover(ng-show="expense.showParticipants")
+                                        li(ng-repeat="participant in party.participants" ng-if="participant.expenses.indexOf(expense.name)>-1")
+                                            a.red.big(ng-click="participant.delete = portlet_expenses.actions.push({remove: participant})" ng-hide="participant.delete")
+                                                i.big ×
+                                            a.green.big(ng-click="portlet_expenses.actions.splice(participant.delete-1, 1);participant.delete = false" ng-show="participant.delete")
+                                                i.big +
+                                            =' '
+                                            span(ng-style="participant.delete?{'text-decoration': 'line-through'}:{}") {{participant.name || participant.User.username}}
+                                        li(ng-repeat="(k, action) in portlet_expenses.actions" ng-if="action.add")
+                                            a.red.big(ng-click="portlet_expenses.actions.splice(k,1)")
+                                                i.big ×
+                                            =' '
+                                            span.green {{action.add}}
+                                        li
+                                            a.green.big(ng-click="addUser!=''&&addUser!=null?portlet_expenses.actions.push({add: addUser}):void(0);addUser = ''")
+                                                i.big +
+                                            input(placeholder="Name" ng-model="addUser")

@@ -5,12 +5,15 @@ User = require('./User')
 PartySchema = new mongoose.Schema
     name: String
     description: String
-    participants: [
-        User: type: mongoose.Schema.Types.ObjectId, ref: 'user'
+    participants: [type: mongoose.Schema.Types.ObjectId, ref: 'user']
+    expenses: [
         name: String
-        expenses: [String]
-        paid: Number
+        cost: Number
+        to: type: mongoose.Schema.Types.ObjectId, ref: 'user'
+        participants: [
+            user: type: mongoose.Schema.Types.ObjectId, ref: 'user'
+            paid: Number
+        ]
     ]
-    expenses: [name: String, cost: Number, to: type: mongoose.Schema.Types.ObjectId, ref: 'user']
 
 module.exports = mongoose.model 'party', PartySchema

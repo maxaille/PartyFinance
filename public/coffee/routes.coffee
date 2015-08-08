@@ -28,7 +28,7 @@ App.config [
             url: '/panel'
             controller: 'panelCtrl'
             secured: true
-            template: "<ui-view />"
+            template: "<ui-view class='fade-in-up'/>"
             redirect: 'panel.overview'
 
         .state 'panel.overview',

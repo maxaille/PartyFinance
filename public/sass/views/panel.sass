@@ -1,2 +1,21 @@
 [class^='panel'],[class*='panel']
     border: 1px transparent solid
+
+.flowGrid:before,.flowGrid:after
+    content: ""
+    display: table
+
+.flowGrid:after
+    clear: both
+
+.flowGridItem
+    margin-bottom: 10px
+.flowGridItem img
+    width: 100%
+
+.flowGridColumn
+    float: left
+    padding-left: 10px
+
+.flowGridColumn:last-of-type
+    padding-right: 10px

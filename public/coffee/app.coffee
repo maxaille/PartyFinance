@@ -2,6 +2,7 @@
     'ui.router'
     'ngResource'
     'pascalprecht.translate'
+    'ngFlowGrid'
 ]
 App.value 'API', location.origin
 

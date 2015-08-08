@@ -3,5 +3,6 @@ angular.module 'PartyFinance'
     '$resource'
     'API'
     ($resource, API) ->
-        $resource API + '/api/parties/:id/:arg', id: '@id', arg: '@arg'
+        $resource API + '/api/parties/:id/:arg', id: '@id', arg: '@arg',
+            'update': method: 'PUT'
 ]

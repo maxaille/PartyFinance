@@ -1,3 +1,4 @@
+global._ = require 'lodash'
 fs = require 'fs'
 app = require './app'
 console = require 'better-console'

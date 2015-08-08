@@ -14,6 +14,6 @@
     "angular-resource": "~1.4.3",
     "angular-translate": "~2.7.2",
     "angular-translate-loader-static-files": "~2.7.2",
-    "angulargrid": "~0.1.2"
+    "ngFlowGrid": "~1.0.1"
   }
 }

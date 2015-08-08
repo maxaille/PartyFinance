@@ -5,13 +5,13 @@ formatParty = (party, formatUser) ->
         id: party.id
         name: party.name
         description: party.description
-        expenses: (name: e.name, cost: e.cost, to: e.to for e in party.expenses) if party.expenses
-        participants: (name: p.name, User: p.User, expenses: p.expenses for p in party.participants) if party.participants
-    if result.participants
-        for p in result.participants
-            if p.User._id
-                console.log p.User.username
-                p.User = formatUser p.User
+        expenses: (name: e.name, cost: e.cost, to: e.to, participants: e.participants for e in party.expenses) if party.expenses
+        participants: if formatUser then (formatUser participant for participant in party.participants) else party.participants if party.participants
+    if result.expenses and formatUser
+        for exp in result.expenses
+            if exp.to._id
+                exp.to = formatUser exp.to
+            exp.participants = (user: formatUser(participant.user), paid: participant.paid for participant in exp.participants)
     return result
 
 validateParty = (party) ->
@@ -28,11 +28,12 @@ routes =
         fn: (req, res) ->
             where = {}
             if req.params and req.params.id then where._id = req.params.id
-            else if req.query.user then where = participants: $elemMatch: User: req.query.user
+            else if req.query.user then where = participants: req.query.user
             else if req.query and Object.getOwnPropertyNames(req.query).length > 0 then where = req.query
 
             cb = (err, resultat) ->
                 if err
+                    console.log err
                     if err.name == 'CastError' then return req.notFound()
                     else return req.internalError()
                 if where._id
@@ -43,7 +44,7 @@ routes =
 
             if where._id
                 Party.findOne where
-                .populate 'participants.User'
+                .populate 'participants expenses.to expenses.participants.user'
                 .exec cb
             else
                 Party.find where, cb
