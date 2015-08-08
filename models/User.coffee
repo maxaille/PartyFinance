@@ -10,9 +10,8 @@ UserSchema = new mongoose.Schema
         type: String
         required: true
         unique: true
-    password:
-        type: String
-        required: true
+    password: String
+    friends: [type: mongoose.Schema.Types.ObjectId, ref: 'user']
 
 checkPasswordModification = (callback) ->
     user = this

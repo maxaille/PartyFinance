@@ -8,31 +8,31 @@ App.controller 'panelCtrl', [
 
         $scope.parties = Party.query user: $rootScope.user.id, ->
             for party in $scope.parties
-                console.log "PARTY NAME: ", party.name
                 party.due = 0
                 party.owe = 0
-                uExpenses = []
+                party.userExpenses = []
+                party.indebted = []
                 # Count users per expense
-                cntExpenses = {}
+                party.cntExpenses = {}
                 for participant in party.participants
                     # Get current user expenses
                     if participant.User == $rootScope.user.id
-                        uExpenses = participant.expenses || []
+                        party.userExpenses = participant.expenses || []
                     for expense in participant.expenses
-                        if !cntExpenses[expense] then cntExpenses[expense] = []
-                        cntExpenses[expense].push participant.User || participant.name
+                        if !party.cntExpenses[expense] then party.cntExpenses[expense] = []
+                        party.cntExpenses[expense].push participant.User || participant.name
                 for pExpense in party.expenses
                     if pExpense.to == $rootScope.user.id
-                        party.owe = pExpense.cost
+                        party.owe += pExpense.cost
                         $scope.totalOwe += pExpense.cost
-                        if $rootScope.user.id in cntExpenses[pExpense.name]
-                            party.owe -= pExpense.cost / cntExpenses[pExpense.name].length
-                            $scope.totalOwe -= pExpense.cost / cntExpenses[pExpense.name].length
+                        if $rootScope.user.id in party.cntExpenses[pExpense.name]
+                            party.owe -= pExpense.cost / party.cntExpenses[pExpense.name].length
+                            $scope.totalOwe -= pExpense.cost / party.cntExpenses[pExpense.name].length
                 # Check due
                 for pExpense in party.expenses
-                    for uExpense in uExpenses
+                    for uExpense in party.userExpenses
                         if  pExpense.name == uExpense and pExpense.to != $rootScope.user.id
-                            due = pExpense.cost / cntExpenses[pExpense.name].length
+                            due = pExpense.cost / party.cntExpenses[pExpense.name].length
                             party.due += due
                             $scope.totalDue += due
 ]

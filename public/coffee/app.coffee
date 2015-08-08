@@ -1,6 +1,7 @@
 @App = angular.module "PartyFinance", [
     'ui.router'
     'ngResource'
+    'pascalprecht.translate'
 ]
 App.value 'API', location.origin
 
@@ -24,6 +25,16 @@ App.config [
     '$httpProvider'
     ($httpProvider) ->
         $httpProvider.interceptors.push 'authInterceptor'
+]
+
+App.config [
+    '$translateProvider'
+    ($translateProvider) ->
+        $translateProvider.useSanitizeValueStrategy 'escaped'
+        $translateProvider.useStaticFilesLoader
+            'prefix': 'resources/translations/'
+            'suffix': '.json'
+        $translateProvider.preferredLanguage 'fr'
 ]
 
 App.service '$token', [
@@ -114,4 +125,12 @@ App.run [
             if !$rootScope.user and toState.secured
                 e.preventDefault()
                 return $state.go 'login', oldState: toState
+            else if toState.redirect
+                redir = toState.redirect
+                if !redir then return
+                e.preventDefault()
+                if redir.indexOf('.') == 0
+                    $state.go fromState.name + toState.redirect, null, location: "replace"
+                else
+                    $state.go redir, null, location: "replace"
 ]

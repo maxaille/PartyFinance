@@ -15,6 +15,7 @@
     "express-jwt": "^3.0.1",
     "express-session": "^1.11.3",
     "gulp": "^3.9.0",
+    "gulp-angular-translate-extract": "^0.1.4",
     "jade": "~1.11.0",
     "jwt-simple": "^0.3.0",
     "mongoose": "^4.0.6",

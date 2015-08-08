@@ -1,12 +1,17 @@
 Party = require '../models/Party'
 
-formatParty = (party) ->
+formatParty = (party, formatUser) ->
     result =
         id: party.id
         name: party.name
         description: party.description
         expenses: (name: e.name, cost: e.cost, to: e.to for e in party.expenses) if party.expenses
         participants: (name: p.name, User: p.User, expenses: p.expenses for p in party.participants) if party.participants
+    if result.participants
+        for p in result.participants
+            if p.User._id
+                console.log p.User.username
+                p.User = formatUser p.User
     return result
 
 validateParty = (party) ->
@@ -26,15 +31,22 @@ routes =
             else if req.query.user then where = participants: $elemMatch: User: req.query.user
             else if req.query and Object.getOwnPropertyNames(req.query).length > 0 then where = req.query
 
-            Party.find where, (err, parties) ->
+            cb = (err, resultat) ->
                 if err
                     if err.name == 'CastError' then return req.notFound()
                     else return req.internalError()
                 if where._id
-                    if parties.length > 0 then return res.json formatParty parties[0]
+                    if resultat._id then return res.json formatParty(resultat, req.formatUser)
                     else return req.notFound()
 
-                res.json (formatParty party for party in parties)
+                res.json (formatParty party for party in resultat)
+
+            if where._id
+                Party.findOne where
+                .populate 'participants.User'
+                .exec cb
+            else
+                Party.find where, cb
     ,
         type: 'post'
         requireAuth: true

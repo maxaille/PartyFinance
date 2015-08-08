@@ -15,7 +15,7 @@ Then the organizer can set when each participant has paid.
     bower install
     grunt
     # start the mongoDB server
-    # systemd -> systemctl start mongod
+    # systemd -> systemctl start mongodb
     # upstart -> /etc/init.d/mongod start
     coffee server.coffee
     

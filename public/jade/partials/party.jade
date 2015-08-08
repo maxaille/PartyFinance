@@ -1,0 +1,68 @@
+.container-fluid
+    .row
+        .col-xs-12.col-md-4.col-sm-6
+            .portlet
+                .title Current party
+                .content
+                    .dark-block
+                        div {{'Owe' | translate}}
+                            span.big  {{party.owe || 0}}
+                            |  €
+                        div {{'Due' | translate}}
+                            span.big  {{party.due || 0}}
+                            |  €
+            .portlet
+                .title Indebted
+                .content
+                    .dark-block
+                        span.big {{party.indebted.length || 0}}
+                        |  owes you money
+                    ul.table
+                        li(ng-repeat="indebted in party.indebted")
+                            a(ng-click="indebted.hide = !indebted.hide")
+                                | {{indebted.name}}: {{indebted.due}}€
+                                ul.no-hover(ng-show="indebted.hide")
+                                    li(ng-repeat="dueExp in indebted.dueExpenses") {{dueExp.name}}: {{dueExp.cost / cntExpenses[dueExp.name].length}} €
+        .col-xs-12.col-md-4.col-sm-6
+            .portlet
+                .title Participants
+                .content
+                    .dark-block
+                        span.big {{party.participants.length}}
+                        |  participants
+                    ul.table
+                            li(ng-repeat="participant in party.participants") {{participant.name || participant.User.username}}
+
+            .portlet(ng-model="portlet_expenses")
+                .title Expenses
+                    a.small.pull-right(ng-click="portlet_expenses.edit?portlet_expenses.save():void(0); portlet_expenses.edit = !portlet_expenses.edit")
+                        button.btn.btn-small(ng-class="{'btn-success': portlet_expenses.edit}") {{portlet_expenses.edit?"SAVE":"EDIT"}}
+                .content
+                    .dark-block
+                        span.big {{party.expenses.length}}
+                        |  expenses
+                    ul.table
+                        li(ng-repeat="expense in party.expenses")
+                            a(ng-click="expense.show = !expense.show" ng-hide="portlet_expenses.edit") {{expense.name}}: {{expense.cost}}€
+                                ul.no-hover(ng-show="expense.show")
+                                    li(ng-repeat="participant in party.participants" ng-if="participant.expenses.indexOf(expense.name)>-1") {{participant.name || participant.User.username}}
+                            .edit(ng-show="portlet_expenses.edit")
+                                input(ng-value="expense.name")
+                                | :
+                                input(type="number" ng-value="expense.cost" ng-show="portlet_expenses.edit")
+                                | €
+
+
+        .col-xs-12.col-md-4.col-sm-6.col-md-4
+            .portlet
+                .title Creditors
+                .content
+                    .dark-block
+                        span.big {{party.creditors.length || 0}}
+                        |  creditors
+                    ul.table
+                        li(ng-repeat="creditor in party.creditors")
+                            a(ng-click="creditor.hide = !creditor.hide")
+                                | {{creditor.name}}: {{creditor.due}}€
+                                ul.no-hover(ng-show="creditor.hide")
+                                    li(ng-repeat="dueExp in creditor.dueExpenses") {{dueExp.name}}: {{dueExp.cost / cntExpenses[dueExp.name].length}} €

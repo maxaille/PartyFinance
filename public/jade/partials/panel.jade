@@ -2,33 +2,34 @@
     .row
         .col-xs-12.col-sm-4
             .portlet
-                .title Remaining total due
+                .title {{'Remaining total due' | translate}}
                 .content
                     .dark-block
-                        div Owe
+                        div {{'Owe' | translate}}
                             span.big  {{totalOwe || 0}}
                             |  €
-                        div Due
+                        div {{'Due' | translate}}
                             span.big  {{totalDue || 0}}
                             |  €
                     ul.table
                         li(ng-repeat="party in parties" ng-if="party.due > 0 || party.owe > 0")
                             .row
                                 .col-xs-4 {{party.name}}
-                                .col-xs-4 due: {{party.due || 0}}€
-                                .col-xs-4 owe: {{party.owe || 0}}€
+                                .col-xs-4 {{'due' | translate}}: {{party.due || 0}}€
+                                .col-xs-4 {{'owe' | translate}}: {{party.owe || 0}}€
         .col-xs-12.col-sm-4
             .portlet
-                .title List of your parties
+                .title {{'List of your parties' | translate}}
                 .content
                     .dark-block
                         .big {{parties.length}}
-                        | coming this month
+                        | {{'coming this month' | translate}}
                     ul.table
-                        li(ng-repeat="party in parties") {{party.name}}
+                        li(ng-repeat="party in parties")
+                            a(ui-sref="panel.party({id: party.id})") {{party.name}}
         .col-xs-12.col-sm-4
             .portlet
-                .title Your groups
+                .title {{'Your groups' | translate}}
                 .content
                     ul.table
                         li Group 1

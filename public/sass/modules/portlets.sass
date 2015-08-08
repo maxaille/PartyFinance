@@ -11,7 +11,7 @@
     .content
         .dark-block
             padding: 5px 0 10px 0
-            margin: 10px 0 0 0
+            margin: 10px 0 8px 0
             background-color: #333
             color: white
             text-align: center
@@ -19,10 +19,25 @@
             .big
                 font-size: 40px
         ul.table
-            padding: 8px 10px 0 10px
-            li
+            padding: 0 10px
+            > li
                 padding: 5px
                 border-bottom: 1px solid #CCC
                 font-size: 16px
                 &:last-child
                     border-bottom: none
+                ul
+                    margin-left: 3px
+                    border-left: 1px solid #CCC
+                    > li
+                        margin-left: 8px
+
+                .edit
+                    input
+                        background: none
+                        border: none
+                        border-bottom: 1px dashed #777
+                        width: 75%
+                        &[type="number"]
+                            margin-left: 5px
+                            width: 15%

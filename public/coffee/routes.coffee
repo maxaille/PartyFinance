@@ -27,7 +27,21 @@ App.config [
         .state 'panel',
             url: '/panel'
             controller: 'panelCtrl'
+            secured: true
+            template: "<ui-view />"
+            redirect: 'panel.overview'
+
+        .state 'panel.overview',
+            url: '/overview'
             title: 'Panel'
             templateUrl: '/partials/panel.html'
             secured: true
+
+        .state 'panel.party',
+            url: '/:id'
+            controller: 'partyCtrl'
+            title: 'Party'
+            templateUrl: '/partials/party.html'
+            secured: true
+
 ]

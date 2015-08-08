@@ -11,6 +11,9 @@
     "grunt-contrib-sass": "~0.9.2",
     "grunt-contrib-watch": "~0.6.1",
     "font-awesome": "~4.3.0",
-    "angular-resource": "~1.4.3"
+    "angular-resource": "~1.4.3",
+    "angular-translate": "~2.7.2",
+    "angular-translate-loader-static-files": "~2.7.2",
+    "angulargrid": "~0.1.2"
   }
 }

@@ -40,33 +40,33 @@ html(ng-app="PartyFinance")
                             //            a(href='#') One more separated link
                         ul.nav.navbar-nav.navbar-right(ng-hide="user")
                             li
-                                a(ui-sref='login') Login
+                                a(ui-sref='login') {{'Login' | translate}}
                             li
-                                a(ui-sref='register') Register
+                                a(ui-sref='register') {{'Register' | translate}}
                         ul.nav.navbar-nav.navbar-right(ng-show="user")
                             li
-                                .nav-text Connected as {{user.username}}
+                                .nav-text {{'Connected as' | translate}} {{user.username}}
                             li
-                                a(ng-click="disconnectUser()")  Disconnect
+                                a(ng-click="disconnectUser()")  {{'Disconnect' | translate}}
             ui-view.fade-in-up(ng-class='$state.current.name')
             footer
                 .container
                     .col-xs-4.col-sm-3
                         ul
                             li
-                                a(ui-sref="start") Start Page
+                                a(ui-sref="start") {{'Start Page' | translate}}
                             li
-                                a(ui-sref="start" anchor-smooth-scroll="seemorethere") More infos
+                                a(ui-sref="start" anchor-smooth-scroll="seemorethere") {{'More infos' | translate}}
                             li
-                                a(ui-sref="start" anchor-smooth-scroll="whydude") But, who are you ?!
+                                a(ui-sref="start" anchor-smooth-scroll="whydude") {{'But, who are you ?!' | translate}}
                     .col-xs-4.col-sm-3
                         ul
                             li
                                 a(ui-sref="panel") Panel
                             li
-                                a(ui-sref="login") Login
+                                a(ui-sref="login") {{'Login' | translate}}
                             li
-                                a(ui-sref="register") Register
+                                a(ui-sref="register") {{'Register' | translate}}
                     .col-xs-4.col-sm-3
                         ul
                             li
@@ -83,6 +83,9 @@ script(src='/plugins/bootstrap/dist/js/bootstrap.js')
 script(src='/plugins/angular/angular.js')
 script(src='/plugins/angular-resource/angular-resource.min.js')
 script(src='/plugins/angular-ui-router/release/angular-ui-router.js')
+script(src='/plugins/angular-translate/angular-translate.min.js')
+script(src='/plugins/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js')
+script(src='/plugins/angulargrid/angulargrid.min.js')
 
 // Application
 script(src='/js/app.js')

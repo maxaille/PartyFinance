@@ -5,21 +5,21 @@ section.main
                 header
                     h1 Party Finance
                     hr.short
-                    h4 Manage the costs of all your parties easily !
+                    h4 {{'Manage the costs of all your parties easily !' | translate}}
                     hr.short
                     a(anchor-smooth-scroll="seemorethere")
-                        button.btn.btn-primary See more
+                        button.btn.btn-primary {{'See more' | translate}}
                     a(ui-sref="panel")
-                        button.btn.btn-info Go to the panel
+                        button.btn.btn-info {{'Go to the panel' | translate}}
 section.stripped#seemorethere
     .container
         .row
             .col-sm-8
                 h1 PARTY !!
                 h4
-                    | Create, organize, invite your friends and put the beers in the fridge.
+                    | {{"Create, organize, invite your friends and put the beers in the fridge." | translate}}
                     br
-                    | We will take care of the math for you :-)
+                    | {{"We will take care of the math for you :-)" | translate}}
             .col-sm-4.beer-fridge
                 .beer(ng-repeat="i in (((b=[]).length=51)&&b) track by $index")
                     .mousse-s-il-vous-plait -
@@ -28,10 +28,10 @@ section.stripped
     .container
         .row
             .col-xs-12.col-sm-8.align-right-sm.col-sm-push-4
-                h1 Divides automatically
+                h1 {{'Divides automatically' | translate}}
                 h4
-                    | Give the amount of money that each person owe you, based on your own criteria.
-                    | You can set a base cost, for tenancies for example, or specific criteria like food, alcohol etc. for each participants
+                    | {{"Give the amount of money that each person owe you, based on your own criteria." | translate}}
+                    | {{"You can set a base cost, for tenancies for example, or specific criteria like food, drinks etc. for each participants" | translate}}
             //.col-xs-12.col-sm-4.col-sm-pull-8
             //    h1 SCREEN
             //    h1 PLZ
@@ -42,7 +42,7 @@ section.stripped
             .col-xs-12.col-sm-8
                 h1 Groups
                 h4
-                    | Set yourself in a group with your friends to easily find them and invite them to parties !
+                    | {{'Set yourself in a group with your friends to easily find them and invite them to parties !' | translate}}
             //.col-xs-12.col-xs-4
             //    h1 SCREEN
             //    h1 PLZ
@@ -51,10 +51,7 @@ section.stripped#whydude
     .container
         .row
             .col-xs-12
-                h1 But, why ?
+                h1 {{'But, why ?' | translate}}
                 h4
-                    | We are students and we don't really have money to spend for all our friends, so we split the bill.
-                    | And we think that if we can spend our money approximately equitably that's better.
-section.stripped
-    div(ng-if="user")
-        | WTF WTF WTF
+                    | {{"We are students and we don't really have money to spend for all our friends, so we split the bill." | translate}}
+                    | {{"And we think that if we can spend our money approximately equitably that's better." | translate}}
