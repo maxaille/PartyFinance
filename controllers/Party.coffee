@@ -11,7 +11,12 @@ formatParty = (party, formatUser) ->
         for exp in result.expenses
             if exp.to._id
                 exp.to = formatUser exp.to
-            exp.participants = (user: formatUser(participant.user), paid: participant.paid for participant in exp.participants)
+            participants = []
+            for participant in exp.participants
+                obj = user: participant.user, paid: participant.paid
+                if obj.user.id then obj.user = formatUser obj.user
+                participants.push obj
+            exp.participants = participants
     return result
 
 validateParty = (party) ->
@@ -86,6 +91,7 @@ routes =
                     party = parties[0]
                     party[key] = value for key, value of data when key != 'id' and value?
                     party.save (err) ->
+                        console.log err
                         if err then return req.internalError 'Database error'
                         res.send formatParty party
     ]

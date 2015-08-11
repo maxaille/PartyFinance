@@ -22,8 +22,8 @@
                 .title {{'List of your parties' | translate}}
                 .content
                     .dark-block
-                        .big {{parties.length}}
-                        | {{'pending' | translate}}
+                        span.big {{parties.length}}
+                        |  {{'pending' | translate}}
                     ul.table
                         li(ng-repeat="party in parties")
                             a(ui-sref="panel.party({id: party.id})") {{party.name}}

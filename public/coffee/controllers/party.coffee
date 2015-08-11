@@ -12,59 +12,67 @@ App.controller 'partyCtrl', [
                     return $state.go 'panel.overview'
                 $scope.party = Party.get id: party.id, ->
                     console.log $scope.party
+                    $scope.orgExpenses = angular.copy $scope.party.expenses
                     $scope.party.due = party.due
                     $scope.party.owe = party.owe
 #                    $scope.userExpenses = party.userExpenses
 #                    $scope.cntExpenses = party.cntExpenses
-#                    $scope.party.creditors = []
+                    $scope.party.creditors = []
                     $scope.party.indebted = []
                     indebted = []
+                    creditors = []
 
-                    for expense in $scope.party.expenses when expense.to.id == $rootScope.user.id
-                        for participant in expense.participants when participant.user.id != $rootScope.user.id
-                            i = indebted.indexOf participant.user.id
-                            if i > -1
-                                $scope.party.indebted[i].due += expense.cost / expense.participants.length
-                            else
-                                i = ($scope.party.indebted.push participant: participant, due: expense.cost / expense.participants.length - participant.paid, dueExpenses: []) - 1
-                                indebted.push participant.user.id
-                            $scope.party.indebted[i].dueExpenses.push expense
+                    for expense in $scope.party.expenses
+                        for participant in expense.participants
 
-#                    creditors = []
+                            # Indebted
+                            if expense.to.id == $rootScope.user.id and participant.user.id != $rootScope.user.id
+                                i = indebted.indexOf participant.user.id
+                                console.log expense.name, participant.user, indebted
 
-#                    # Search all creditors
-#                    for e in $scope.userExpenses
-#                        exp = do -> return exp for exp in $scope.party.expenses when exp.name == e
-#                        if exp.to.id != $rootScope.user.id
-#                            creditor = do -> return p.User.username for p in $scope.party.participants when p.User.id == exp.to.id
-#
-#                            i = creditors.indexOf creditor
-#                            if i > -1
-#                                $scope.party.creditors[i].due += exp.cost / $scope.cntExpenses[e].length
-#                            else
-#                                i = ($scope.party.creditors.push name: creditor, due: exp.cost / $scope.cntExpenses[e].length, dueExpenses: []) - 1
-#                                creditors.push creditor
-#                            $scope.party.creditors[i].dueExpenses.push exp
-#                    # Search all who owe you money
-#                    for e in $scope.party.expenses when e.to.id == $scope.user.id
-#                        for id in $scope.cntExpenses[e.name]
-#                            if id == $rootScope.user.id then continue
-#                            name = (do -> return u.User.username for u in $scope.party.participants when u.User.id == id) or id
-#
-#                            i = indebted.indexOf name
-#                            if i > -1
-#                                $scope.party.indebted[i].due += e.cost/$scope.cntExpenses[e.name].length
-#                            else
-#                                i = ($scope.party.indebted.push name: name, due: e.cost/$scope.cntExpenses[e.name].length, dueExpenses: []) - 1
-#                                indebted.push name
-#                            $scope.party.indebted[i].dueExpenses.push e
+                                if i > -1
+                                    $scope.party.indebted[i].due += expense.cost / expense.participants.length
+                                else
+                                    i = ($scope.party.indebted.push participant: participant, due: expense.cost / expense.participants.length - participant.paid, dueExpenses: []) - 1
+                                    indebted.push participant.user.id
+                                $scope.party.indebted[i].dueExpenses.push expense
 
+
+
+
+
+
+
+                            # Creditors
+                            else if expense.to.id != $rootScope.user.id and participant.user.id == $rootScope.user.id
+                                creditor = expense.to
+                                i = creditors.indexOf creditor.id
+                                if i > -1
+                                    $scope.party.creditors[i].due += expense.cost / expense.participants.length - participant.paid
+                                else
+                                    i = ($scope.party.creditors.push creditor: creditor, due: expense.cost / expense.participants.length - participant.paid, dueExpenses: []) - 1
+                                    creditors.push creditor.id
+                                $scope.party.creditors[i].dueExpenses.push expense
                     partyGrid = fgDelegate.getFlow('partyGrid')
                     setTimeout (-> partyGrid.refill true), 0
+
         refreshData()
+
+        $scope.notAdded = (expense) ->
+            (item) ->
+                !(do -> return value for value in expense.participants when value.user.id == item.id) and
+                !(do -> return action for action in $scope.portlet_expenses.actions when action.add and action.add.id == item.id)
+
 
         $scope.portlet_expenses =
             actions: []
+            addUser: (user, expense) ->
+                if user and user.id and
+                   !(do -> return true for participant in expense.participants when participant.user.id == user.id) and
+                   !(do -> return true for action in $scope.portlet_expenses.actions when action.add and action.add.id == user.id)
+                    $scope.portlet_expenses.actions.push add: user, expense: expense
+                    return ''
+                return user
             save: ->
                 data =
                     id: $scope.party.id
@@ -74,14 +82,25 @@ App.controller 'partyCtrl', [
                     if !data.expenses then data.expenses = []
                     data.expenses.push expense
                 if $scope.portlet_expenses.actions.length > 0
-                    console.log $scope.party.participants
-                    for action in $scope.portlet_expenses.actions
-                        if action.add
-                            user = do -> participant for participant in $scope.party.participants when participant.User.username == action.add
-                            if !user then return
-                            console.log expense.name
-                Party.update id: $scope.party.id, expenses: $scope.party.expenses, (data) ->
+                    # Correctly reformat expenses
+                    resExpenses = data.expenses
+                    for expense in resExpenses
+                        for participant in expense.participants
+                            if participant.user.id
+                                participant.user = participant.user.id
+
+                        # Update each expense
+                        for action in $scope.portlet_expenses.actions when action.expense.name == expense.name
+                            if action.add
+                                expense.participants.push paid: 0, user: action.add.id
+                            else if action.remove
+                                expense.participants.splice(participant, 1) for participant in expense.participants when participant.user == action.remove.id
+                console.log data
+
+
+                Party.update data, (data) ->
                     $scope.portlet_expenses.edit = false
+                    $scope.portlet_expenses.actions = []
                     refreshData()
                 , (data) ->
                     console.log data
