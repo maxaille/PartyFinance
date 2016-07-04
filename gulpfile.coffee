@@ -73,3 +73,5 @@ gulp.task "watch", ->
         'public/coffee/services/**/*.coffee'
         'public/coffee/directives/**/*.coffee'
         'public/coffee/filters/**/*.coffee'], ["coffee"]
+
+gulp.task 'default', ['sass', 'jade', 'coffee', 'resources']
