@@ -3,7 +3,8 @@
   "description": "Allows you to organize and share exepenses of Party easily",
   "version": "0.1.0",
   "scripts": {
-    "start": "coffee ./bin/www.coffee"
+    "start": "coffee server.coffee",
+    "install": "bower install && gulp"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -28,7 +29,7 @@
     "serve-favicon": "~2.3.0"
   },
   "repository": "git://github.com/maxaille/PartyFinance",
-  "main": "bin/www.coffee",
+  "main": "server.coffee",
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-changed": "^1.2.1",
